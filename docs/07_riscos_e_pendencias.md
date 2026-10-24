@@ -12,13 +12,16 @@
 | R-006 | Android introduzir limitações de UI/performance | Médio/alto | Planejar toque e UI responsiva cedo; testar em aparelho real |
 | R-007 | Reprodução excessiva da obra de inspiração | Médio | Manter mundo, personagens, diálogos, visuais e missões originais |
 | R-008 | Conteúdo científico virar simulação complexa ou instrução perigosa | Médio | Abstrair processos de risco e priorizar clareza lúdica |
-| R-009 | Configuração remota GitHub ainda não concluída | Alto | Confirmar repositório, branch padrão, permissões e primeiro push antes de delegar alterações remotas |
+| R-009 | Configuração remota GitHub ainda não concluída | Resolvido | Repositório remoto configurado em `https://github.com/Thiagogalva/renascimento.git`, sincronizado na branch master |
+
+## Pendências resolvidas na baseline (BK-001)
+
+- [x] Confirmar versão exata do Godot 4: **Godot 4.7.2.stable.official.ed1daf0bf** (executável verificado no sistema).
+- [x] Confirmar configuração atual do renderer: **Forward Plus (d3d12 no Windows)** configurado em `project.godot`; avaliação de Compatibility aberta para exportação Android.
+- [x] Confirmar repositório GitHub e primeiro push: **Confirmado** (`origin/master` em `https://github.com/Thiagogalva/renascimento.git`, commit `b4d27bb`).
 
 ## Pendências que não bloqueiam a Fase 1
 
-- Confirmar versão exata do Godot 4.
-- Confirmar configuração atual do renderer.
-- Confirmar se o repositório privado do GitHub foi criado e se o primeiro push foi realizado.
 - Definir controles finais e escala da UI.
 - Definir tom narrativo e direção de arte.
 - Definir regras completas de sobrevivência e combate PvE.

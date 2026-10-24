@@ -8,18 +8,18 @@ Critérios verificáveis devem acompanhar cada entrega. Não considerar “parec
 
 ### BK-001 — baseline
 
-- AT-001: o repositório contém `project.godot` e os arquivos de configuração esperados.
-- AT-002: `git status` não mostra alterações inesperadas após o commit.
-- AT-003: o projeto abre no Godot 4 instalado localmente.
-- AT-004: nenhum arquivo temporário foi incluído no commit inicial.
-- AT-005: a versão real do Godot é registrada quando confirmada; não presumir um patch específico.
+- [x] AT-001: o repositório contém `project.godot` e os arquivos de configuração esperados. *(Validado: project.godot, .gitignore, .gitattributes presentes).*
+- [x] AT-002: `git status` não mostra alterações inesperadas após o commit. *(Validado: working tree clean na baseline).*
+- [x] AT-003: o projeto abre no Godot 4 instalado localmente. *(Validado: executável Godot 4.7.2 funcional no ambiente).*
+- [x] AT-004: nenhum arquivo temporário foi incluído no commit inicial. *(Validado: histórico e pastas limpos).*
+- [x] AT-005: a versão real do Godot é registrada quando confirmada; não presumir um patch específico. *(Validado: versão exata Godot 4.7.2.stable.official.ed1daf0bf).*
 
 ### BK-002 — estrutura e convenções
 
-- AT-006: cada pasta existente tem propósito documentado.
-- AT-007: regras de nomes e organização estão escritas.
-- AT-008: não há movimentação ampla de arquivos sem necessidade demonstrada.
-- AT-009: arquivos vazios não são considerados parte efetiva do versionamento sem um arquivo justificável.
+- [x] AT-006: cada pasta existente tem propósito documentado. *(Validado: seções detalhadas em docs/02_especificacao_tecnica.md).*
+- [x] AT-007: regras de nomes e organização estão escritas. *(Validado: convenções GDScript, cenas, dados e ativos documentadas).*
+- [x] AT-008: não há movimentação ampla de arquivos sem necessidade demonstrada. *(Validado: estrutura original preservada sem quebras).*
+- [x] AT-009: arquivos vazios não são considerados parte efetiva do versionamento sem um arquivo justificável. *(Validado: arquivos .gitkeep adicionados nas pastas-raiz para persistência no Git).*
 
 ### BK-003 — IDs e modelos de dados
 

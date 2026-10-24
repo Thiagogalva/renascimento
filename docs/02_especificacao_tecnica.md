@@ -20,19 +20,33 @@
 7. **Compatibilidade de plataforma:** considerar tela sensível ao toque, escalabilidade da UI, memória e performance desde o planejamento, sem otimização prematura.
 8. **Testabilidade:** regras importantes devem poder ser testadas sem depender exclusivamente de interação visual.
 
-## 3. Estrutura de pastas esperada
+## 3. Estrutura de pastas e convenções
 
-A estrutura já existente deve ser inspecionada antes de qualquer reorganização. A estrutura inicial conhecida inclui:
+A estrutura do projeto é desenhada para desacoplar dados, lógica e apresentação, permitindo crescimento escalável sem dependências frágeis:
 
-- `scenes/` — cenas Godot.
-- `scripts/` — scripts e lógica.
-- `assets/` — arte, áudio e outros recursos.
-- `data/` — definições de conteúdo.
-- `docs/` — documentação.
-- `tests/` — testes e verificações automatizadas.
-- `project.godot` — configuração do projeto.
+### 3.1. Propósito de cada pasta
 
-Não criar subpastas em excesso antes de existir conteúdo que as justifique. Propor uma convenção e documentá-la antes de reorganizar.
+- **`assets/`** — Arquivos brutos e importados de mídia (sprites, texturas, modelos, efeitos sonoros, músicas e fontes). Subpastas recomendadas conforme surgirem ativos: `assets/sprites/`, `assets/audio/`, `assets/fonts/`, `assets/ui/`.
+- **`data/`** — Definições puras de dados em formato de recursos Godot (`.tres`) ou tabelas (`.json`), como catálogo de itens, tecnologias, experimentos e propriedades físicas/químicas. Nunca misturar com cenas ou lógica de apresentação.
+- **`docs/`** — Documentação viva do projeto em Markdown (arquitetura, decisões, backlog, critérios de aceitação e diário).
+- **`scenes/`** — Cenas do Godot (`.tscn`). Organizadas por contexto de responsabilidade:
+  - `scenes/ui/`: Interfaces de usuário, HUD, menus, popups e diálogos.
+  - `scenes/world/`: Mapas, chunks, biomas, grid isométrica e gerenciadores de ambiente.
+  - `scenes/entities/`: Personagens (jogador, sobreviventes, NPCs), estátuas e objetos interativos.
+  - `scenes/components/`: Nós e subcenas reutilizáveis (ex.: áreas de interação, barras de status).
+- **`scripts/`** — Scripts GDScript (`.gd`) que representam utilitários globais, autoloads/singletons, classes-base, sistemas puros de dados e regras de negócio sem acoplamento a um nó específico.
+- **`tests/`** — Scripts e cenas de teste automatizado (testes unitários e cenários de integração/regras de validação).
+
+### 3.2. Convenções de nomenclatura e estilo
+
+- **Arquivos e Pastas:** sempre em `snake_case` em minúsculas, sem caracteres especiais ou espaços (ex.: `player_movement.gd`, `inventory_slot.tscn`, `iron_ore.tres`).
+- **Nomes de Nós na Árvore de Cenas:** `PascalCase` descritivo (ex.: `PlayerCamera`, `InteractionDetector`, `CollisionShape2D`).
+- **Nomes de Classes (`class_name`):** `PascalCase` (ex.: `class_name ItemDefinition`, `class_name ExperimentManager`).
+- **Constantes e Enums:** `UPPER_SNAKE_CASE` (ex.: `MAX_STACK_SIZE`, `enum InteractionType { GATHER, EXAMINE, CRAFT }`).
+- **Variáveis e Funções:** `snake_case` (ex.: `current_health`, `func calculate_reaction_time() -> float:`).
+- **Membros e Funções Privadas/Internas:** prefixadas com underscore `_` (ex.: `var _internal_state: int`, `func _validate_slot() -> bool:`).
+- **Sinais (Signals):** `snake_case`, sempre no pretérito ou indicativo de conclusão do evento (ex.: `signal item_added(item_id, amount)`, `signal experiment_completed(result)`).
+- **Tipagem Estática:** Obrigatória no GDScript 2.0 para variáveis, parâmetros e retornos de função, reduzindo bugs em runtime e facilitando refatoração.
 
 ## 4. IDs e dados
 
