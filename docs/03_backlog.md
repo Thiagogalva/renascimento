@@ -27,8 +27,8 @@
 |---|---|---|---|
 | BK-006 | Definir controles e movimento isométrico | Especificação de movimento, colisões e câmera | Concluída |
 | BK-007 | Criar protótipo de movimentação | Personagem movimenta-se em área de teste | Concluída |
-| BK-008 | Definir sistema de interação | Alcance, prioridade de alvo e feedback especificados | Planejada |
-| BK-009 | Implementar interação básica | Jogador interage com objeto de teste | Planejada |
+| BK-008 | Definir sistema de interação | Alcance, prioridade de alvo e feedback especificados | Concluída |
+| BK-009 | Implementar interação básica | Jogador interage com objeto de teste | Concluída |
 | BK-010 | Validar PC e controles de toque | Controles básicos testados nas duas plataformas | Planejada |
 
 ## Fase 3 — Inventário e fabricação (P1)

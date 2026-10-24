@@ -16,14 +16,14 @@ y_sort_enabled = true
 [node name="PanelContainer" type="PanelContainer" parent="UI"]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 460.0
+offset_right = 520.0
 offset_bottom = 120.0
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 12
+theme_override_constants/margin_left = 14
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 12
+theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/PanelContainer/MarginContainer"]
@@ -31,10 +31,52 @@ layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="UI/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Renascimento — Protótipo Isométrico (BK-005)"
+theme_override_font_sizes/font_size = 15
+text = "Renascimento — Protótipo de Movimento e Interação (BK-009)"
 
 [node name="InfoLabel" type="Label" parent="UI/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 text = "Carregando..."
+
+[node name="DialoguePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 80.0
+offset_top = -140.0
+offset_right = -80.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/DialoguePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DialoguePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="DialogueTitle" type="Label" parent="UI/DialoguePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.45, 1)
+theme_override_font_sizes/font_size = 14
+text = "[Objeto Examinado]"
+
+[node name="DialogueText" type="Label" parent="UI/DialoguePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Descrição científica do objeto."
+autowrap_mode = 3
+
+[node name="DialoguePrompt" type="Label" parent="UI/DialoguePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.65, 0.65, 1)
+theme_override_font_sizes/font_size = 11
+text = "(Pressione [E] ou mova-se para fechar)"
+horizontal_alignment = 2

@@ -83,9 +83,29 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
   - Importação de assets executada pelo editor Godot 4.7.2 em modo headless (`--editor --headless --quit`).
   - Execução e carregamento da cena principal validados via Godot CLI (`--headless --quit` e teste de 60 frames com `--quit-after 60`), retornando código 0 sem nenhum erro ou aviso.
   - Grade isométrica 2:1 (128x64px), Y-Sort dinâmico e colisores de pés validados.
-- **Resultado:** Protótipo funcional de movimentação e teste isométrico operando perfeitamente.
-- **Decisões aprovadas:** DEC-001 (Godot 4), DEC-003 (2D isométrico) aplicadas diretamente.
-- **Pendências:** Implementar sistema básico de interação (BK-008 e BK-009).
+- **Pendências:** Concluído. Iniciar implementação do sistema de interação.
+
+### 2026-10-24 — Sistema de interação e estátua petrificada (BK-008 e BK-009)
+
+- **Objetivo:** Projetar e implementar o subsistema de interação desacoplado: componente `Interactable` com detecção de proximidade, prompt flutuante automático sobre alvos, priorização pelo alvo mais próximo no jogador e feedback de inspeção científica no HUD.
+- **Branch/commit:** `feature/fase-2-cena-isometrica`
+- **Arquivos alterados:**
+  - `scripts/interactable.gd` (componente reutilizável de interação)
+  - `scripts/player_controller.gd` (adicionada lógica de detecção de área e priorização de alvo)
+  - `scenes/entities/player.tscn` (adicionado `InteractionDetector` com shape circular de 52px)
+  - `assets/sprites/petrified_statue.svg` e `.import` (sprite vetorial da estátua petrificada com musgo)
+  - `scenes/entities/petrified_statue.tscn` (entidade com física de base e componente de inspeção de estátua)
+  - `scenes/entities/test_obstacle.tscn` (adicionado componente de inspeção de calcário)
+  - `scenes/tests/test_isometric_sandbox.tscn` e `.gd` (painel inferior de diálogo científico e integração)
+  - `tests/test_interaction.gd` (teste automatizado headless validando detecção, foco e evento)
+  - `docs/03_backlog.md` (BK-008 e BK-009 marcadas como Concluídas)
+  - `docs/08_diario_de_desenvolvimento.md`
+- **Validações executadas:**
+  - Teste unitário headless executado via `Godot_v4.7.2 -s res://tests/test_interaction.gd`: detecção de alvo mais próximo, ativação de prompt e sinal de interação aprovados com sucesso.
+  - Execução e carregamento da cena de teste em headless (`--quit-after 60`): código de saída 0 sem warnings ou erros.
+- **Resultado:** BK-008 e BK-009 concluídas com sucesso. O jogador agora pode se aproximar de pilares de ruína ou da estátua petrificada, visualizar o indicador flutuante `[E] Inspecionar` e acionar o log científico.
+- **Decisões aprovadas:** DEC-011 e DEC-012 cumpridas com o primeiro objeto investigativo do loop científico.
+- **Pendências:** BK-010 (validação de controles táteis para Android) ou avanço para a Fase 3 (Inventário e Coleta).
 
 ## Modelo para próximas entradas
 

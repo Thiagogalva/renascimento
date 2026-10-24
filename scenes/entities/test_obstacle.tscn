@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Texture2D" uid="uid://dgbv418x0213t" path="res://assets/sprites/obstacle_pillar.svg" id="1_texture"]
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="2_interactable"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_base"]
 radius = 9.0
 height = 36.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trigger"]
+radius = 32.0
 
 [node name="TestObstacle" type="StaticBody2D"]
 y_sort_enabled = true
@@ -16,6 +20,16 @@ texture = ExtResource("1_texture")
 offset = Vector2(0, -38)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_base")
+
+[node name="Interactable" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_interactable")
+interaction_title = "Inspecionar Ruína"
+interaction_id = &"resource.monument.limestone_pillar"
+scientific_log_entry = "[Amostra Mineral] Calcário antigo rico em Carbonato de Cálcio (CaCO3). Pode ser calcinado para produção de cal virgem e argamassa primitiva."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+shape = SubResource("CircleShape2D_trigger")
