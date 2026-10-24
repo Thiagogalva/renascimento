@@ -33,6 +33,22 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
 - **Decisões aprovadas:** Nenhuma decisão alterada; DEC-001 confirmada com Godot 4.7.2.
 - **Pendências:** Iniciar BK-003 (IDs estáveis e catálogo de modelos de dados conceituais).
 
+### 2026-10-24 — IDs estáveis e modelos conceituais de dados (BK-003)
+
+- **Objetivo:** Estabelecer arquitetura técnica de IDs, namespaces por domínio, campos conceituais mínimos para entidades, políticas de migração/depreciação e catálogo conceitual provisório para o primeiro protótipo.
+- **Branch/commit:** `feature/fase-1-fundacao`
+- **Arquivos alterados:**
+  - `docs/02_especificacao_tecnica.md`
+  - `docs/03_backlog.md`
+  - `docs/04_criterios_de_aceitacao.md`
+  - `docs/08_diario_de_desenvolvimento.md`
+- **Validações executadas:**
+  - Critérios de aceitação AT-010 a AT-014 validados.
+  - Verificada conformidade estrita de unicidade, desacoplamento semântico (`display_name_key`) e política de depreciação/fallback seguro.
+- **Resultado:** BK-003 concluído com sucesso sem introdução prematura de scripts de gameplay.
+- **Decisões aprovadas:** Nenhuma decisão violada; DEC-008 e DEC-009 respeitadas nos campos dos modelos conceituais.
+- **Pendências:** Iniciar BK-004 (Cenas-base, inputs e configurações).
+
 ## Modelo para próximas entradas
 
 ### AAAA-MM-DD — título curto

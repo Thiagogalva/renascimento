@@ -48,14 +48,134 @@ A estrutura do projeto é desenhada para desacoplar dados, lógica e apresentaç
 - **Sinais (Signals):** `snake_case`, sempre no pretérito ou indicativo de conclusão do evento (ex.: `signal item_added(item_id, amount)`, `signal experiment_completed(result)`).
 - **Tipagem Estática:** Obrigatória no GDScript 2.0 para variáveis, parâmetros e retornos de função, reduzindo bugs em runtime e facilitando refatoração.
 
-## 4. IDs e dados
+## 4. IDs estáveis e modelos de dados conceituais
 
-- IDs técnicos devem ser únicos, permanentes e sem acentos.
-- Preferir identificadores semânticos em minúsculas, com namespace por tipo, por exemplo `item.flint`, `resource.fresh_water`, `tech.basic_pottery`, `npc.first_survivor`, `quest.revival_trial`.
-- Os exemplos são ilustrativos; verificar colisões antes de adotá-los como IDs definitivos.
-- Nome de exibição pode ser traduzido ou alterado sem alterar o ID.
-- Nunca usar índice de array, nome de nó ou texto localizado como identidade persistente.
-- Ao remover conteúdo já usado por saves, planejar migração/depreciação em vez de reciclar o ID.
+Para garantir integridade de saves, sincronização em rede e escalabilidade sem dependência de strings localizadas ou índices de array, todo o conteúdo do jogo é governado por regras estritas de identidade técnica.
+
+### 4.1. Regras fundamentais de IDs
+
+1. **Unicidade Absoluta:** Cada ID técnico deve ser único em todo o escopo do projeto.
+2. **Imutabilidade Permanente:** Uma vez publicado ou gravado em um arquivo de campanha, o ID técnico nunca é renomeado ou reutilizado para outra entidade.
+3. **Desacoplamento de Apresentação:** Textos exibidos ao jogador (`display_name`, títulos, descrições e traduções) podem ser alterados livremente sem afetar o ID técnico subjacente.
+4. **Formato Sintático:** Caracteres minúsculos ASCII `[a-z0-9_]` organizados hierarquicamente por pontos (`.`). Não usar acentos, espaços, hífens ou caracteres especiais.
+
+### 4.2. Padrão de Namespaces por Domínio
+
+| Domínio | Padrão do Namespace | Exemplo Conceitual |
+|---|---|---|
+| **Itens (matérias-primas)** | `item.raw.<nome>` | `item.raw.clay`, `item.raw.flint`, `item.raw.saltpeter` |
+| **Itens (química e reagentes)** | `item.chemical.<nome>` | `item.chemical.distilled_alcohol`, `item.chemical.nitric_acid` |
+| **Itens (ferramentas e recipientes)** | `item.tool.<nome>` | `item.tool.clay_crucible`, `item.tool.stone_mortar` |
+| **Itens (compostos especiais)** | `item.compound.<nome>` | `item.compound.revival_formula` |
+| **Recursos de Ambiente** | `resource.<categoria>.<nome>` | `resource.deposit.saltpeter`, `resource.water.river_spring` |
+| **Tecnologias e Conhecimento** | `tech.<ramo>.<nome>` | `tech.chemistry.calcination`, `tech.biology.revival_solution` |
+| **Experimentos Científicos** | `experiment.<processo>.<nome>` | `experiment.distillation.alcohol`, `experiment.synthesis.nitric_acid` |
+| **NPCs e Sobreviventes** | `npc.<papel>.<nome>` | `npc.craftsman.tatsuo`, `npc.scout.maya` |
+| **Tarefas de Comunidade** | `task.<tipo>.<nome>` | `task.gather.river_clay`, `task.craft.charcoal` |
+| **Estruturas e Bancadas** | `structure.<tipo>.<nome>` | `structure.station.alembic_still`, `structure.kiln.clay_furnace` |
+| **Missões e Marcos** | `quest.<arco>.<nome>` | `quest.prologue.first_spark`, `quest.revival.awaken_craftsman` |
+| **Campanhas e Sessões** | `campaign.<uuid>` | `campaign.c4a1b8e9_7dec_41d0_a765_00a0c91e6bf6` |
+
+### 4.3. Modelos Conceituais Mínimos (Especificação de Campos)
+
+Cada categoria possui uma especificação mínima obrigatória para evitar campos nulos e garantir integridade:
+
+* **Item (`ItemDefinition`):**
+  - `id: StringName` (ID técnico único).
+  - `display_name_key: String` (chave de localização para o nome visível).
+  - `description_key: String` (chave de localização da descrição).
+  - `category: enum ItemCategory` (`RAW`, `CHEMICAL`, `TOOL`, `COMPOUND`, `CONSUMABLE`).
+  - `max_stack: int` (tamanho máximo de pilha no inventário).
+  - `weight: float` (peso unitário).
+  - `is_quest_item: bool` (se verdadeiro, imune a descarte acidental).
+  - `is_pvp_lootable: bool` (se falso, nunca entra no saque de derrota PvP, conforme RV-06).
+
+* **Recurso Coletável de Ambiente (`WorldResourceDefinition`):**
+  - `id: StringName`.
+  - `yield_item_id: StringName` (ID do item gerado na coleta).
+  - `yield_quantity_range: Vector2i` (quantidade mínima e máxima).
+  - `required_tool_category: StringName` (categoria de ferramenta exigida ou vazio para mãos limpas).
+  - `hardness_tier: int` (nível mínimo de ferramenta exigido).
+  - `respawn_time_seconds: float` (tempo para reaparecer no mundo, ou 0 se for depósito finito).
+
+* **Tecnologia (`TechDefinition`):**
+  - `id: StringName`.
+  - `prerequisite_tech_ids: Array[StringName]` (tecnologias que precisam ser dominadas antes).
+  - `required_experiment_ids: Array[StringName]` (experimentos que precisam ter sido concluídos).
+  - `unlocked_recipes: Array[StringName]` (novas receitas desbloqueadas).
+  - `unlocked_structures: Array[StringName]` (novas estruturas desbloqueadas).
+
+* **Experimento Científico (`ExperimentDefinition`):**
+  - `id: StringName`.
+  - `station_required: StringName` (estrutura necessária, ex.: `structure.station.alembic_still`).
+  - `inputs: Array[Dictionary]` (lista de `{ "item_id": StringName, "amount": int }`).
+  - `conditions: Dictionary` (fatores ambientais ou de processo: `{ "min_heat": int, "duration_seconds": float }`).
+  - `outputs_success: Array[Dictionary]` (itens resultantes em caso de sucesso).
+  - `outputs_failure: Array[Dictionary]` (subprodutos ou resíduos didáticos em caso de falha).
+  - `discovery_unlock_tech: StringName` (tecnologia desbloqueada na primeira conclusão com sucesso).
+
+* **NPC / Sobrevivente (`NPCDefinition`):**
+  - `id: StringName`.
+  - `character_name: String` (nome próprio).
+  - `initial_state: enum NPCState` (`PETRIFIED`, `AWAKENED`, `ASSIGNED`, `RESTING`).
+  - `specialty_skills: Dictionary` (perfil de aptidões, ex.: `{ "crafting": 3, "gathering": 1 }`).
+  - `revival_compound_id: StringName` (composto químico necessário para despetrificar).
+
+* **Tarefa Atribuível (`TaskDefinition`):**
+  - `id: StringName`.
+  - `required_skill: StringName` (habilidade do NPC necessária).
+  - `duration_seconds: float` (tempo base para conclusão do ciclo da tarefa).
+  - `inputs: Array[Dictionary]` (insumos consumidos da despensa/baú do acampamento).
+  - `outputs: Array[Dictionary]` (recursos produzidos ao concluir).
+
+* **Estrutura / Bancada (`StructureDefinition`):**
+  - `id: StringName`.
+  - `build_cost: Array[Dictionary]` (materiais exigidos para construção).
+  - `footprint: Vector2i` (dimensão ocupada na grade isométrica).
+  - `interaction_type: enum InteractionType` (`CRAFT`, `EXPERIMENT`, `STORAGE`, `REST`).
+  - `pvp_immune: bool = true` (estruturas são imunes a dano de PvP, conforme DEC-009 e RV-08).
+
+### 4.4. Política de Descontinuação e Migração de IDs
+
+Para garantir que atualizações do jogo nunca quebrem saves existentes:
+1. **Regra de Não-Exclusão:** IDs técnicos existentes nunca são removidos das tabelas históricas do jogo, mesmo se deixarem de surgir naturalmente no mundo.
+2. **Depreciação (`deprecated: true`):** Quando um item ou processo for reformulado ou descontinuado, sua definição recebe a marcação de depreciação.
+3. **Mapeamento de Migração:** O sistema de save mantém um dicionário de migração de versões:
+   - Exemplo: `id_migration_map = { "item.raw.crude_clay": "item.raw.clay" }`.
+4. **Tratamento de Fallback Seguro:** Caso um save referencie um ID que não exista na versão atual do jogo, o carregador converte o dado para um objeto substituto seguro (`item.fallback.unknown_relic`) mantendo metadados originais para evitar corrupção ou travamento.
+
+### 4.5. Catálogo Conceitual Provisório (Primeiro Protótipo)
+
+*Nota: Os exemplos abaixo são parâmetros conceituais provisórios destinados a validar o ciclo do primeiro protótipo, pendentes de aprovação final do usuário (AT-013).*
+
+* **Itens e Reagentes:**
+  - `item.raw.flint` — Pederneira/Sílex para faíscas e corte primitivo.
+  - `item.raw.clay` — Argila para moldagem de refratários e recipientes.
+  - `item.raw.saltpeter` — Salitre (nitrato de potássio bruto) coletado em depósitos orgânicos/cavernas.
+  - `item.raw.calcium_carbonate` — Conchas marinhas ou rocha calcária triturada.
+  - `item.raw.wild_berries` — Bagas silvestres açucaradas para fermentação inicial.
+  - `item.chemical.fermented_must` — Mosto fermentado contendo álcool bruto.
+  - `item.chemical.distilled_alcohol` — Etanol concentrado obtido por destilação.
+  - `item.chemical.nitric_acid` — Ácido nítrico puro extraído de salitre e reagentes.
+  - `item.compound.revival_formula` — Solução milagrosa de despetrificação.
+  - `item.tool.clay_crucible` — Cadinho cerâmico resistente a altas temperaturas.
+  - `item.tool.alembic_tube` — Tubo de condensação de cerâmica.
+* **Recursos de Ambiente:**
+  - `resource.deposit.clay_bed` — Jazida de argila úmida na margem do rio.
+  - `resource.deposit.limestone` — Afloramento de calcário.
+  - `resource.flora.berry_bush` — Arbusto silvestre com frutos sazonais.
+  - `resource.water.fresh_stream` — Fonte de água doce limpa.
+* **Estruturas:**
+  - `structure.station.clay_kiln` — Forno de barro para queima de cerâmica e calcinação.
+  - `structure.station.alembic_still` — Alambique rudimentar para destilação fracionada de álcool.
+  - `structure.monument.petrified_survivor` — Estátua petrificada do artesão encontrada na ruína.
+* **Experimentos:**
+  - `experiment.synthesis.distilled_alcohol` — Purificação de álcool por calor brando e condensação.
+  - `experiment.synthesis.nitric_acid` — Reação de salitre com ácido sulfúrico/calcinação para obtenção de ácido nítrico.
+  - `experiment.synthesis.revival_compound` — Equilíbrio estequiométrico preciso entre etanol e ácido nítrico.
+* **NPC e Tarefa:**
+  - `npc.craftsman.tatsuo` — Primeiro sobrevivente recuperável (habilidade: marcenaria e cerâmica avançada).
+  - `task.gather.clay_deposits` — Tarefa atribuível ao sobrevivente para coleta contínua de argila.
 
 ## 5. Salvamento e carregamento
 

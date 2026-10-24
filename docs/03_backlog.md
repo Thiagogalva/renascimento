@@ -15,7 +15,7 @@
 |---|---|---|---|---|
 | BK-001 | Confirmar projeto, versionamento e baseline | Projeto Godot abre; Git funciona; estado inicial registrado | — | Concluída |
 | BK-002 | Definir convenções e estrutura de diretórios | Pastas e convenções documentadas, sem reorganização desnecessária | BK-001 | Concluída |
-| BK-003 | Definir IDs estáveis e modelos de dados conceituais | Padrão de IDs e catálogo inicial de entidades documentados | BK-002 | Planejada |
+| BK-003 | Definir IDs estáveis e modelos de dados conceituais | Padrão de IDs e catálogo inicial de entidades documentados | BK-002 | Concluída |
 | BK-004 | Definir cenas-base, inputs e configurações | Mapa conceitual das cenas e ações de input para PC/Android | BK-002, BK-003 | Planejada |
 | BK-005 | Planejar cena de teste isométrica | Critérios de uma cena mínima para validar câmera, grade e ordenação | BK-004 | Planejada |
 

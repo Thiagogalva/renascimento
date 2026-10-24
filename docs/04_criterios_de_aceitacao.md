@@ -23,11 +23,11 @@ Critérios verificáveis devem acompanhar cada entrega. Não considerar “parec
 
 ### BK-003 — IDs e modelos de dados
 
-- AT-010: cada categoria de entidade tem convenção de ID documentada.
-- AT-011: IDs não dependem de texto exibido, índices ou caminhos de cena.
-- AT-012: alterações de nomes exibidos não exigem alteração de ID.
-- AT-013: exemplos estão identificados como exemplos até aprovação.
-- AT-014: há política para IDs removidos e saves antigos.
+- [x] AT-010: cada categoria de entidade tem convenção de ID documentada. *(Validado: tabela de namespaces por domínio na Seção 4.2 de docs/02_especificacao_tecnica.md).*
+- [x] AT-011: IDs não dependem de texto exibido, índices ou caminhos de cena. *(Validado: desacoplamento semântico estrito e display_name_key implementados).*
+- [x] AT-012: alterações de nomes exibidos não exigem alteração de ID. *(Validado: regra de imutabilidade técnica e separação de localização).*
+- [x] AT-013: exemplos estão identificados como exemplos até aprovação. *(Validado: catálogo da Seção 4.5 identificado explicitamente como provisório para validação).*
+- [x] AT-014: há política para IDs removidos e saves antigos. *(Validado: regras de depreciação, id_migration_map e fallback seguro descritas na Seção 4.4).*
 
 ### BK-004 — cenas, inputs e configurações
 
