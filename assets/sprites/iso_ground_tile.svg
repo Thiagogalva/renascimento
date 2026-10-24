@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="64" viewBox="0 0 128 64">
+  <!-- Isometric Diamond 2:1 ratio (128x64) -->
+  <polygon points="64,1 127,32 64,63 1,32" fill="#3e6b48" stroke="#2e5237" stroke-width="2"/>
+  <polygon points="64,4 121,32 64,60 7,32" fill="#467851"/>
+  <!-- Subtle terrain grid texture detail -->
+  <polygon points="64,12 105,32 64,52 23,32" fill="#4f855b" opacity="0.4"/>
+</svg>

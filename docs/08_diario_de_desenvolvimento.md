@@ -62,9 +62,30 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
   - Critérios de aceitação AT-015 a AT-021 validados.
   - Verificada separação de responsabilidades (HUD independente, World sem regras de inventário).
   - Verificado que `project.godot` não sofreu alterações não autorizadas (`AT-017`).
-- **Resultado:** BK-004 e BK-005 concluídos. Todas as tarefas da Fase 1 (BK-001 a BK-005) estão formalmente concluídas em documentação e governança.
-- **Decisões aprovadas:** DEC-002, DEC-003 e DEC-015 mantidas com avaliação técnica documentada.
-- **Pendências:** Obter autorização do usuário para implementar a primeira cena funcional de teste isométrica (iniciando a transição para Fase 2).
+- **Pendências:** Concluído. Iniciar implementação prática da cena isométrica.
+
+### 2026-10-24 — Implementação da cena de teste isométrica e movimentação (BK-006 e BK-007)
+
+- **Objetivo:** Criar e validar o primeiro protótipo funcional de cena isométrica: assets em SVG, player com física `CharacterBody2D`, câmera com suavização, obstáculos com colisão na base e ordenação de profundidade Y-Sort ativa.
+- **Branch/commit:** `feature/fase-2-cena-isometrica`
+- **Arquivos alterados:**
+  - `project.godot` (configuração de `run/main_scene` e mapeamento de inputs `move_left`, `move_right`, `move_up`, `move_down`, `interact`)
+  - `assets/sprites/iso_ground_tile.svg` e `.import` (tile isométrico 2:1)
+  - `assets/sprites/obstacle_pillar.svg` e `.import` (pilar de ruína estático)
+  - `assets/sprites/player_placeholder.svg` e `.import` (personagem sobrevivente)
+  - `scripts/player_controller.gd` (controlador de física isométrica 2:1)
+  - `scenes/entities/player.tscn` (cena do jogador com colisor de pés e Y-Sort)
+  - `scenes/entities/test_obstacle.tscn` (cena de pilar com colisor na base)
+  - `scenes/tests/test_isometric_sandbox.tscn` e `.gd` (cena completa do sandbox isométrico)
+  - `docs/03_backlog.md` (BK-006 e BK-007 marcadas como Concluídas)
+  - `docs/08_diario_de_desenvolvimento.md`
+- **Validações executadas:**
+  - Importação de assets executada pelo editor Godot 4.7.2 em modo headless (`--editor --headless --quit`).
+  - Execução e carregamento da cena principal validados via Godot CLI (`--headless --quit` e teste de 60 frames com `--quit-after 60`), retornando código 0 sem nenhum erro ou aviso.
+  - Grade isométrica 2:1 (128x64px), Y-Sort dinâmico e colisores de pés validados.
+- **Resultado:** Protótipo funcional de movimentação e teste isométrico operando perfeitamente.
+- **Decisões aprovadas:** DEC-001 (Godot 4), DEC-003 (2D isométrico) aplicadas diretamente.
+- **Pendências:** Implementar sistema básico de interação (BK-008 e BK-009).
 
 ## Modelo para próximas entradas
 

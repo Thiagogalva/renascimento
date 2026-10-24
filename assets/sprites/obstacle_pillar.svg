@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="96" viewBox="0 0 64 96">
+  <!-- Ancient stone ruin pillar for Y-Sort testing -->
+  <!-- Base shadow on isometric floor -->
+  <ellipse cx="32" cy="84" rx="26" ry="10" fill="#1b2e1e" opacity="0.35"/>
+  <!-- Pillar pedestal -->
+  <polygon points="32,74 58,82 32,90 6,82" fill="#585c54" stroke="#3b3e38" stroke-width="2"/>
+  <!-- Pillar shaft body -->
+  <path d="M12,28 L52,28 L52,78 L12,78 Z" fill="#7a8074" stroke="#3b3e38" stroke-width="2"/>
+  <!-- Highlights and cracks -->
+  <line x1="20" y1="30" x2="20" y2="76" stroke="#9da396" stroke-width="2"/>
+  <line x1="44" y1="32" x2="44" y2="76" stroke="#50544c" stroke-width="2"/>
+  <!-- Capital / Top -->
+  <polygon points="32,8 60,18 32,28 4,18" fill="#8f9689" stroke="#3b3e38" stroke-width="2"/>
+  <polygon points="32,12 52,18 32,24 12,18" fill="#a4ab9e"/>
+</svg>

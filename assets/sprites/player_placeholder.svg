@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="64" viewBox="0 0 48 64">
+  <!-- Survivor Player Character Placeholder -->
+  <!-- Ground contact shadow -->
+  <ellipse cx="24" cy="58" rx="16" ry="6" fill="#1b2e1e" opacity="0.35"/>
+  <!-- Boots / Legs -->
+  <rect x="16" y="46" width="6" height="12" rx="2" fill="#4a3728"/>
+  <rect x="26" y="46" width="6" height="12" rx="2" fill="#4a3728"/>
+  <!-- Tunic / Cloak -->
+  <polygon points="12,28 36,28 40,48 8,48" fill="#a67c52" stroke="#6e5033" stroke-width="2"/>
+  <polygon points="20,28 28,28 30,48 18,48" fill="#bc9063"/>
+  <!-- Arms -->
+  <rect x="8" y="28" width="5" height="16" rx="2" fill="#d9ad82"/>
+  <rect x="35" y="28" width="5" height="16" rx="2" fill="#d9ad82"/>
+  <!-- Head & Hair -->
+  <circle cx="24" cy="18" r="9" fill="#f0c8a0"/>
+  <!-- Hair -->
+  <path d="M14,16 Q24,6 34,16 Q32,10 24,10 Q16,10 14,16 Z" fill="#2d2218"/>
+  <circle cx="21" cy="18" r="1.5" fill="#2d2218"/>
+  <circle cx="27" cy="18" r="1.5" fill="#2d2218"/>
+</svg>
