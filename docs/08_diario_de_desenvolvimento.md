@@ -47,7 +47,24 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
   - Verificada conformidade estrita de unicidade, desacoplamento semântico (`display_name_key`) e política de depreciação/fallback seguro.
 - **Resultado:** BK-003 concluído com sucesso sem introdução prematura de scripts de gameplay.
 - **Decisões aprovadas:** Nenhuma decisão violada; DEC-008 e DEC-009 respeitadas nos campos dos modelos conceituais.
-- **Pendências:** Iniciar BK-004 (Cenas-base, inputs e configurações).
+- **Pendências:** Concluído. Iniciar BK-004 e BK-005.
+
+### 2026-10-24 — Cenas-base, inputs e planejamento da cena isométrica (BK-004 e BK-005)
+
+- **Objetivo:** Projetar o mapa conceitual de cenas (separando apresentação e domínio), mapear ações semânticas de input para PC e Android, avaliar renderers (Forward+ vs Compatibility) e definir as especificações técnicas da cena de teste isométrica (grid 2:1, Y-Sort, colisão na base e câmera).
+- **Branch/commit:** `feature/fase-1-fundacao`
+- **Arquivos alterados:**
+  - `docs/02_especificacao_tecnica.md`
+  - `docs/03_backlog.md`
+  - `docs/04_criterios_de_aceitacao.md`
+  - `docs/08_diario_de_desenvolvimento.md`
+- **Validações executadas:**
+  - Critérios de aceitação AT-015 a AT-021 validados.
+  - Verificada separação de responsabilidades (HUD independente, World sem regras de inventário).
+  - Verificado que `project.godot` não sofreu alterações não autorizadas (`AT-017`).
+- **Resultado:** BK-004 e BK-005 concluídos. Todas as tarefas da Fase 1 (BK-001 a BK-005) estão formalmente concluídas em documentação e governança.
+- **Decisões aprovadas:** DEC-002, DEC-003 e DEC-015 mantidas com avaliação técnica documentada.
+- **Pendências:** Obter autorização do usuário para implementar a primeira cena funcional de teste isométrica (iniciando a transição para Fase 2).
 
 ## Modelo para próximas entradas
 

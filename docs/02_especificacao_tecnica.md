@@ -235,10 +235,98 @@ Parâmetros abaixo são valores iniciais provisórios e devem ser configuráveis
 - Documentar qualquer addon e sua licença antes de incorporá-lo.
 - Tratar arquivos de campanha como dados não confiáveis.
 
-## 9. Plataforma e desempenho
+## 9. Cenas-base, inputs e configurações de plataforma (BK-004)
+
+### 9.1. Mapa conceitual de cenas e responsabilidades
+
+Para manter a separação estrita entre visualização, regras de negócio e dados (AT-015), o ecossistema de cenas do Godot é estruturado da seguinte forma:
+
+```
+[Main (Boot / Autoloads)]
+       │
+       ├─── [UI Layer (CanvasLayer)] ─── Menus, HUD, Diálogos, Joystick Virtual
+       │
+       └─── [World Root (Node2D)]
+                 │
+                 ├─── [IsometricTileMapLayer] ─── Chão, relevo, grid 2:1
+                 │
+                 └─── [YSortEntities (Node2D)] ─── Ordenação por coordenada Y
+                           ├─── [Player] (CharacterBody2D + Controlador)
+                           ├─── [NPC / Estátua] (CharacterBody2D / StaticBody2D)
+                           ├─── [Workstations] (StaticBody2D / Area2D)
+                           └─── [WorldResources] (StaticBody2D / Area2D)
+```
+
+* **`scenes/boot/main.tscn` (Main / Boot):** Responsável apenas por ciclo de vida, transição de cenas principais, inicialização de autoloads de áudio/configurações e gerenciamento de sessões. Não contém lógica de gameplay.
+* **`scenes/world/world_base.tscn` (World Root):** Contém os nós de grid isométrica (`TileMapLayer`), limites de mundo e nós de ambiente. Não acessa diretamente o inventário do jogador nem gerencia receitas.
+* **`scenes/entities/player.tscn` (Player):** Representação física e animada do jogador no mundo. Contém `CharacterBody2D`, forma de colisão na base (`CollisionShape2D`), detector de interação (`Area2D`) e câmera seguidora (`Camera2D`). A lógica de regras puras é delegada a controladores desacoplados.
+* **`scenes/ui/hud.tscn` (UI / HUD):** Camada `CanvasLayer` independente que projeta na tela a barra de atalhos rápidos (hotbar), status de sobrevivência, balões de interação flutuantes e interface tátil para mobile. Comunica-se exclusivamente via sinais com os sistemas centrais.
+
+### 9.2. Ações abstratas de input (Input Map)
+
+As ações são definidas de forma semântica e abstrata, desacopladas de periféricos físicos específicos:
+
+| Ação Abstrata | Finalidade | Mapeamento PC | Mapeamento Android |
+|---|---|---|---|
+| `move_left` | Vetor de deslocamento oeste/isométrico | Tecla `A` / Seta Esquerda | Joystick virtual / Eixo X negativo |
+| `move_right` | Vetor de deslocamento leste/isométrico | Tecla `D` / Seta Direita | Joystick virtual / Eixo X positivo |
+| `move_up` | Vetor de deslocamento norte/isométrico | Tecla `W` / Seta Cima | Joystick virtual / Eixo Y negativo |
+| `move_down` | Vetor de deslocamento sul/isométrico | Tecla `S` / Seta Baixo | Joystick virtual / Eixo Y positivo |
+| `interact` | Interação primária (coleta, ativação, diálogo) | Tecla `E` / Clique Esquerdo | Botão tátil contextual / Tap no alvo |
+| `inspect` | Exame detalhado de pistas científicas / estátuas | Tecla `F` / Clique Direito | Botão tátil secundário |
+| `toggle_inventory` | Abertura/fechamento da mochila de itens | Tecla `Tab` ou `I` | Botão tátil HUD Mochila |
+| `toggle_science` | Abertura do caderno de descobertas/hipóteses | Tecla `T` | Botão tátil HUD Ciência |
+| `ui_cancel` | Fechar janelas ativas / abrir menu de pausa | Tecla `Escape` | Botão voltar do sistema Android / Botão Pausa |
+
+### 9.3. Configurações de plataforma e renderer (AT-017, AT-018)
+
+* **Estado Atual (`project.godot`):**
+  - Recursos ativos: `PackedStringArray("4.7", "Forward Plus")` com driver `d3d12` no Windows.
+  - Modo de esticamento de janela: `mode="canvas_items"`, `aspect="expand"`.
+* **Avaliação de Renderer para PC e Android (DEC-015):**
+  - **Forward Plus:** Excelente fidelidade gráfica para desktop moderno com Vulkan / Direct3D 12.
+  - **Compatibility (Candidato para Android):** Baseado em OpenGL ES 3.0 / GLES3. É o recomendador padrão para jogos 2D móveis no Godot 4, pois assegura inicialização imediata e ausência de travamentos em aparelhos Android de entrada ou que não possuem drivers Vulkan consistentes.
+* **Política de Aplicação:** Nenhuma configuração de renderização foi alterada de forma prematura no `project.godot` nesta fase para preservar a baseline funcional comprovada. A alteração de renderer para `Compatibility` será proposta e testada de forma isolada no momento da preparação dos testes em dispositivo Android real.
+
+---
+
+## 10. Planejamento da cena de teste isométrica (BK-005)
+
+### 10.1. Objetivo da cena mínima
+
+Validar a geometria, a câmera, a renderização e o comportamento físico 2D isométrico no Godot 4 antes de qualquer implementação de lógica de sobrevivência ou inventário.
+
+A cena de teste deverá comprovar com rigor:
+1. **Grade Isométrica (Grid 2:1):** Correto encaixe e projeção de tiles isométricos (proporção clássica 2:1, largura dupla em relação à altura).
+2. **Ordenação Visual de Profundidade (Y-Sort):** Garantir que nós filhos do container `YSort` exibam oclusão correta (personagem visualmente atrás de uma árvore quando acima dela, e na frente da árvore quando abaixo dela).
+3. **Colisão Isométrica na Base:** Garantir que corpos rígidos e obstáculos possuam colisores posicionados na base (pegada no chão), permitindo que a parte superior de troncos e ruínas seja transpassada visualmente pelo personagem.
+4. **Câmera Isométrica com Suavização e Limites:** Câmera que acompanha o corpo com suavização suave (`position_smoothing_enabled = true`) e limites rígidos de borda de mapa para evitar visão do vazio.
+
+### 10.2. Escopo estrito e limites
+
+* **Elementos incluídos:**
+  - Terreno simples fechado de 20x20 tiles isométricos.
+  - Uma estrutura estática de teste (ex.: tronco ou pilar de ruína) com colisor e Y-Sort ativo.
+  - Uma entidade de teste móvel com movimentação básica em 8 direções e colisor na base.
+  - Câmera 2D configurada com limites da área.
+* **Exclusões absolutas (não implementar nesta cena):**
+  - Sem inventário ou pilhas de itens.
+  - Sem coleta de recursos no chão.
+  - Sem combate ou cálculo de dano.
+  - Sem mecânica de experimentos ou bancadas.
+  - Sem diálogos ou IA de NPCs.
+  - Sem multiplayer ou persistência em disco.
+
+### 10.3. Critério de autorização (AT-021)
+
+A implementação dos arquivos da cena funcional (`scenes/tests/test_isometric_sandbox.tscn` e script de controle) somente será realizada após a aprovação explícita do usuário, finalizando com rigor a governança da Fase 1.
+
+---
+
+## 11. Plataforma e desempenho
 
 PC e Android são alvos. Decisões de resolução, controles, UI, memória e renderização devem ser verificadas no hardware disponível. Não declarar suporte final a dispositivos sem teste. O protótipo deve medir performance antes de definir limites de mundo ou população.
 
-## 10. Estado da especificação
+## 12. Estado da especificação
 
 Esta é uma base inicial. A arquitetura detalhada de rede, esquema final de save, fórmulas de combate, sistemas de sobrevivência e pipeline de exportação continuam pendentes. Não inventar esses detalhes durante a Fase 1.

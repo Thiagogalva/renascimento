@@ -31,16 +31,16 @@ Critérios verificáveis devem acompanhar cada entrega. Não considerar “parec
 
 ### BK-004 — cenas, inputs e configurações
 
-- AT-015: mapa conceitual de cenas separa apresentação e regras.
-- AT-016: ações de input planejadas cobrem teclado/mouse e toque.
-- AT-017: nenhuma configuração é alterada sem comparação com o projeto existente.
-- AT-018: necessidades de PC/Android e renderer candidato são documentadas.
+- [x] AT-015: mapa conceitual de cenas separa apresentação e regras. *(Validado: árvore conceitual desacoplando Boot, World, Player e HUD na Seção 9.1 de docs/02_especificacao_tecnica.md).*
+- [x] AT-016: ações de input planejadas cobrem teclado/mouse e toque. *(Validado: matriz semântica de inputs com mapeamentos PC e Android na Seção 9.2).*
+- [x] AT-017: nenhuma configuração é alterada sem comparação com o projeto existente. *(Validado: project.godot preservado com configurações oficiais).*
+- [x] AT-018: necessidades de PC/Android e renderer candidato são documentadas. *(Validado: Forward Plus vs Compatibility analisados na Seção 9.3).*
 
 ### BK-005 — cena de teste isométrica
 
-- AT-019: há critérios de validação para orientação da grade, câmera, ordenação visual e colisão.
-- AT-020: o escopo da cena de teste é mínimo e não inclui sistemas de gameplay.
-- AT-021: a implementação da cena funcional só começa após autorização explícita.
+- [x] AT-019: há critérios de validação para orientação da grade, câmera, ordenação visual e colisão. *(Validado: 4 pilares técnicos detalhados na Seção 10.1).*
+- [x] AT-020: o escopo da cena de teste é mínimo e não inclui sistemas de gameplay. *(Validado: lista explícita de inclusões e exclusões na Seção 10.2).*
+- [x] AT-021: a implementação da cena funcional só começa após autorização explícita. *(Validado: planejamento formalizado; aguardando autorização para criação das cenas).*
 
 ## Regras de validação — multiplayer/PvP (planejadas para fases futuras)
 
