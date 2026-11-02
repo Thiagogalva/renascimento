@@ -14,6 +14,7 @@ signal interaction_triggered(target: Interactable)
 
 var nearby_interactables: Array[Interactable] = []
 var current_target: Interactable = null
+var is_facing_back: bool = false
 
 func _ready() -> void:
 	if interaction_detector:
@@ -37,17 +38,28 @@ func _handle_movement(delta: float) -> void:
 		var move_dir: Vector2 = Vector2(raw_input.x, raw_input.y * isometric_aspect_ratio).normalized()
 		velocity = move_dir * move_speed
 		
+		# Determina orientação vertical (frente vs costas)
+		if raw_input.y < 0:
+			is_facing_back = true
+		elif raw_input.y > 0:
+			is_facing_back = false
+			
 		if sprite:
+			# Orientação horizontal por espelhamento
 			if raw_input.x < 0:
 				sprite.flip_h = true
 			elif raw_input.x > 0:
 				sprite.flip_h = false
-			if sprite.animation != &"walk":
-				sprite.play(&"walk")
+				
+			var target_anim: StringName = &"walk_back" if is_facing_back else &"walk_front"
+			if sprite.animation != target_anim:
+				sprite.play(target_anim)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, move_speed * 8.0 * delta)
-		if sprite and sprite.animation != &"idle":
-			sprite.play(&"idle")
+		if sprite:
+			var target_idle: StringName = &"idle_back" if is_facing_back else &"idle_front"
+			if sprite.animation != target_idle:
+				sprite.play(target_idle)
 		
 	move_and_slide()
 

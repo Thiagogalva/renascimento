@@ -4,6 +4,22 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
 
 ## 2026-10 — Fundação local
 
+### 2026-11-02 — Animações Bidirecionais de Frente e Costas Implementadas (8 Frames)
+
+- **Objetivo:** Resolver a sensação de deslocamento artificial no 2D isométrico implementando animações completas de frente (rosto/descendo) e costas (nuca/subindo) com 8 frames a 10 FPS.
+- **Branch:** `feature/animacao-personagem`
+- **Arquivos criados:**
+  - `assets/sprites/player_front_idle.png`, `player_back_idle.png` — poses de repouso frontal e traseira.
+  - `assets/sprites/player_front_walk_0.png` a `_7.png` — ciclo de caminhada frontal de 8 frames com pés perfeitamente alinhados e fundo transparente.
+  - `assets/sprites/player_back_walk_0.png` a `_7.png` — ciclo de caminhada traseiro de 8 frames (visão de costas).
+  - `assets/sprites/player_frames.tres` — recurso SpriteFrames com `idle_front`, `idle_back`, `walk_front` e `walk_back`.
+- **Arquivos modificados:**
+  - `scenes/entities/player.tscn` — configurado `AnimatedSprite2D` com escala 0.32 e offset (-122 px) alinhado rigorosamente à cápsula de pés.
+  - `scripts/player_controller.gd` — adicionada máquina de direção que alterna para `walk_back`/`idle_back` ao subir (W/Seta Cima) e `walk_front`/`idle_front` ao descer (S/Seta Baixo), com espelhamento horizontal para esquerda e direita.
+- **Validações executadas:**
+  - Suíte completa de 101 testes automatizados (interação, inventário, fabricação, persistência e ciência) → **100% aprovado (Exit Code 0)**.
+  - Execução de cena isométrica por 60 frames (`--quit-after 60`) → **Exit Code 0**.
+
 ### 2026-11-01 — Ciência, Tecnologia e Experimentos Implementados (BK-016 a BK-020)
 
 - **Objetivo:** Modelar a árvore de conhecimentos, experimentos científicos, persistência do caderno científico e integrar o experimento de calcinação do calcário no protótipo jogável.
