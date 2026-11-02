@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_definition.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b0id6p8vik3g2" path="res://assets/sprites/item_flint.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"item.raw.flint"
+display_name = "Sílex Bruto"
+description = "Pedra silicosa dura e cristalina. Produz faíscas eficientes ao atrito mecânico."
+category = 0
+icon = ExtResource("2_icon")
+max_stack = 50
+weight = 0.5
+is_quest_item = false
+is_pvp_lootable = true

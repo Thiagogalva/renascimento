@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Flint Rock Item Icon -->
+  <polygon points="12,42 22,14 48,10 54,34 38,54 18,52" fill="#2d3033" stroke="#16181a" stroke-width="2"/>
+  <polygon points="22,14 48,10 36,36" fill="#3d4247"/>
+  <polygon points="12,42 22,14 36,36 18,52" fill="#4b5056"/>
+  <polygon points="36,36 48,10 54,34 38,54" fill="#25272a"/>
+  <!-- Sharp shiny edge highlight -->
+  <line x1="22" y1="14" x2="36" y2="36" stroke="#909aa3" stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Saltpeter / Potassium Nitrate Crystals Item Icon -->
+  <polygon points="16,52 48,52 42,42 20,44" fill="#52544e"/>
+  <!-- Prismatic crystal 1 (center) -->
+  <polygon points="32,8 42,28 32,48 22,28" fill="#d9ded6" stroke="#9da398" stroke-width="1.5"/>
+  <polygon points="32,8 42,28 32,48" fill="#edf2ea"/>
+  <!-- Crystal 2 (left) -->
+  <polygon points="20,18 28,34 20,48 12,34" fill="#c7ccc4" stroke="#9da398" stroke-width="1.5"/>
+  <polygon points="20,18 28,34 20,48" fill="#dce3d8"/>
+  <!-- Crystal 3 (right) -->
+  <polygon points="44,22 52,36 44,48 36,36" fill="#c7ccc4" stroke="#9da398" stroke-width="1.5"/>
+  <polygon points="44,22 52,36 44,48" fill="#edf2ea"/>
+</svg>

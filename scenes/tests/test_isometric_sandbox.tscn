@@ -16,8 +16,8 @@ y_sort_enabled = true
 [node name="PanelContainer" type="PanelContainer" parent="UI"]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 520.0
-offset_bottom = 120.0
+offset_right = 540.0
+offset_bottom = 126.0
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
 layout_mode = 2
@@ -32,7 +32,7 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="UI/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "Renascimento — Protótipo de Movimento e Interação (BK-009)"
+text = "Renascimento — Inventário e Coleta (Fase 3)"
 
 [node name="InfoLabel" type="Label" parent="UI/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -45,19 +45,19 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 80.0
-offset_top = -140.0
-offset_right = -80.0
-offset_bottom = -24.0
+offset_left = 100.0
+offset_top = -220.0
+offset_right = -100.0
+offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/DialoguePanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 18
-theme_override_constants/margin_top = 12
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 18
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/DialoguePanel/MarginContainer"]
 layout_mode = 2
@@ -80,3 +80,28 @@ theme_override_colors/font_color = Color(0.65, 0.65, 0.65, 1)
 theme_override_font_sizes/font_size = 11
 text = "(Pressione [E] ou mova-se para fechar)"
 horizontal_alignment = 2
+
+[node name="HotbarPanel" type="PanelContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -230.0
+offset_top = -74.0
+offset_right = 230.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/HotbarPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="SlotsHBox" type="HBoxContainer" parent="UI/HotbarPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1

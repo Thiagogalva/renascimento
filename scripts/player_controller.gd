@@ -10,6 +10,7 @@ signal interaction_triggered(target: Interactable)
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var interaction_detector: Area2D = $InteractionDetector
+@onready var inventory: Inventory = $Inventory
 
 var nearby_interactables: Array[Interactable] = []
 var current_target: Interactable = null

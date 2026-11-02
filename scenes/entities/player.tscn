@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="1_controller"]
 [ext_resource type="Texture2D" uid="uid://clllu8ahx1ppr" path="res://assets/sprites/player_placeholder.svg" id="2_texture"]
+[ext_resource type="Script" path="res://scripts/inventory.gd" id="3_inventory"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_feet"]
 radius = 7.0
@@ -30,3 +31,7 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionDetector"]
 shape = SubResource("CircleShape2D_interaction")
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("3_inventory")
+max_slots = 8

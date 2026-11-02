@@ -4,6 +4,35 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
 
 ## 2026-10 — Fundação local
 
+### 2026-11-01 — Inventário e Coleta implementados (BK-011, BK-012)
+
+- **Objetivo:** Modelar item/pilha e implementar o sistema de inventário do jogador com coleta de itens no mundo.
+- **Branch:** `feature/fase-3-inventario`
+- **Arquivos criados:**
+  - `scripts/item_definition.gd` — `class_name ItemDefinition extends Resource`, 8 exports (id, display_name, description, category, icon, max_stack, weight, is_quest_item)
+  - `scripts/item_slot.gd` — `class_name ItemSlot extends RefCounted`, representa uma pilha com `quantity` e `item`
+  - `scripts/inventory.gd` — `class_name Inventory extends Node`, lógica de empilhamento e remoção, sinais `item_added`, `item_removed`, `inventory_updated`
+  - `scripts/collectible_item.gd` — `class_name CollectibleItem extends Node2D`, integra `Interactable` com `Inventory`, suporte a coleta parcial
+  - `assets/sprites/item_flint.svg`, `item_clay.svg`, `item_saltpeter.svg` — ícones SVG dos primeiros itens (sílex, argila, salitre)
+  - `data/items/flint.tres`, `clay.tres`, `saltpeter.tres` — recursos `.tres` com `ItemDefinition`
+  - `scenes/entities/collectible_item.tscn` — cena de item coletável (Node2D + Sprite2D + Interactable)
+  - `tests/test_inventory.gd` — 19 asserts cobrindo add_item, empilhamento, overflow, remove, has_item, is_full
+- **Arquivos modificados:**
+  - `scripts/player_controller.gd` — adicionado `@onready var inventory: Inventory = $Inventory`
+  - `scenes/entities/player.tscn` — adicionado nó filho `Inventory` (max_slots = 8)
+  - `scenes/tests/test_isometric_sandbox.gd` — spawn de 6 coletáveis, hotbar dinâmica de 8 slots
+  - `scenes/tests/test_isometric_sandbox.tscn` — adicionado `HotbarPanel`
+- **Validações executadas:**
+  - `--editor --headless --quit` → exit 0 (classes globais registradas: CollectibleItem, PlayerController, Inventory, ItemDefinition, ItemSlot)
+  - `--headless --quit-after 60` → exit 0, sem erros de script
+  - `--headless --script tests/test_inventory.gd` → **19/19 testes passaram ✅**
+- **Decisões técnicas:**
+  - `Inventory extends Node` (não Resource) para poder usar sinais e `_ready()` sem instância manual.
+  - `ItemSlot extends RefCounted` (não Node) para manter inventário leve — sem nó na árvore por slot.
+  - Coleta parcial suportada: se inventário cheio a metade, o item de chão retém o restante e atualiza o título.
+  - Lambda GDScript não captura `int` mutável por referência; solução adotada: mover contadores para `Array[int]` de instância.
+
+
 - Godot 4 instalado no Windows e o usuário confirmou que o projeto abre.
 - Projeto de trabalho: `C:\Projetos\Renascimento`.
 - Git instalado; versão observada anteriormente: `2.55.0.windows.5`.

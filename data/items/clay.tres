@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_definition.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dka05p5odn75s" path="res://assets/sprites/item_clay.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"item.raw.clay"
+display_name = "Argila Úmida"
+description = "Terra plástica maleável coletada na margem de rios. Essencial para moldagem de refratários e cerâmica."
+category = 0
+icon = ExtResource("2_icon")
+max_stack = 50
+weight = 0.8
+is_quest_item = false
+is_pvp_lootable = true

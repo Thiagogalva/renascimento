@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_definition.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dd44lhcxviv87" path="res://assets/sprites/item_saltpeter.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"item.raw.saltpeter"
+display_name = "Salitre Mineral"
+description = "Nitrato de potássio bruto colhido em rochas orgânicas. Fonte de nitrogênio para síntese de ácido nítrico."
+category = 1
+icon = ExtResource("2_icon")
+max_stack = 50
+weight = 0.4
+is_quest_item = false
+is_pvp_lootable = true

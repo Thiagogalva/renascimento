@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Moist Clay Lump Item Icon -->
+  <path d="M14,38 Q10,22 26,16 Q44,12 50,26 Q56,42 42,50 Q24,54 14,38 Z" fill="#9e5638" stroke="#63321d" stroke-width="2"/>
+  <!-- Wet clay surface highlights -->
+  <path d="M22,22 Q34,18 44,24 Q36,32 24,30 Z" fill="#b86b49"/>
+  <ellipse cx="28" cy="24" rx="4" ry="2" fill="#d98966" opacity="0.6"/>
+  <ellipse cx="38" cy="40" rx="6" ry="3" fill="#804126"/>
+</svg>
