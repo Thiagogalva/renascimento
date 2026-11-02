@@ -185,9 +185,20 @@ func _spawn_obstacles() -> void:
 
 
 func _spawn_petrified_statue() -> void:
-	var statue: Node2D = STATUE_SCENE.instantiate()
-	statue.position = _grid_to_screen(8, 8)
-	entities_container.add_child(statue)
+	var statue1: Node2D = STATUE_SCENE.instantiate()
+	statue1.position = _grid_to_screen(8, 8)
+	entities_container.add_child(statue1)
+
+	var statue2: Node2D = STATUE_SCENE.instantiate()
+	statue2.position = _grid_to_screen(11, 7)
+	var spr: Sprite2D = statue2.get_node_or_null("Sprite2D")
+	if spr:
+		spr.texture = preload("res://assets/sprites/statue_3.png")
+	var inter: Interactable = statue2.get_node_or_null("Interactable")
+	if inter:
+		inter.interaction_title = "Examinar Sobrevivente em Postura Alerta"
+		inter.scientific_log_entry = "[Análise Mineralógica] Um segundo indivíduo petrificado em pose de recuo. Carapaça de silicato idêntica à primeira."
+	entities_container.add_child(statue2)
 
 
 func _spawn_collectibles() -> void:
