@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TechDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tech_definition.gd" id="1_tech"]
+
+[resource]
+script = ExtResource("1_tech")
+id = &"tech.primitive.fire"
+display_name = "Domínio do Fogo Primitivo"
+description = "Aprender a manter brasas constantes usando sílex lascado e combustível seco. Ponto de partida térmico para termoquímica e fornos."
+category = 0
+prerequisite_tech_ids = []
+required_experiment_ids = []
+unlocked_recipes = [&"recipe.basic.flint_knapping"]
+unlocked_structures = [&"structure.station.crafting_bench"]
+deprecated = false

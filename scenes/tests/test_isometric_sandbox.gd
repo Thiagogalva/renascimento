@@ -1,7 +1,7 @@
 extends Node2D
 
-## Cena de Teste e Validação Isométrica — Fase 1, 2, 3 e 3b (Fabricação)
-## Valida: grade 2:1, Y-Sort, interação, inventário com coleta e fabricação básica.
+## Cena de Teste e Validação Isométrica — Fases 1, 2, 3 e 4 (Ciência e Tecnologia)
+## Valida: grade 2:1, Y-Sort, interação, inventário, fabricação e progressão científica com experimentos.
 
 const TILE_WIDTH: float = 128.0
 const TILE_HEIGHT: float = 64.0
@@ -19,9 +19,16 @@ const ITEM_CLAY = preload("res://data/items/clay.tres")
 const ITEM_SALTPETER = preload("res://data/items/saltpeter.tres")
 const ITEM_CLAY_BRICK = preload("res://data/items/clay_brick.tres")
 const ITEM_STONE_FLAKES = preload("res://data/items/stone_flakes.tres")
+const ITEM_CALCIUM = preload("res://data/items/calcium_carbonate.tres")
+const ITEM_QUICKLIME = preload("res://data/items/quicklime.tres")
+const ITEM_SOOT = preload("res://data/items/soot_ash.tres")
 
 const RECIPE_CLAY_BRICK = preload("res://data/recipes/clay_brick.tres")
 const RECIPE_FLINT_KNAPPING = preload("res://data/recipes/flint_knapping.tres")
+
+const TECH_FIRE = preload("res://data/tech/primitive_fire.tres")
+const TECH_CALCINATION = preload("res://data/tech/calcination.tres")
+const EXP_CALCINATION = preload("res://data/experiments/calcination_limestone.tres")
 
 @onready var ground_container: Node2D = $Ground
 @onready var entities_container: Node2D = $Entities
@@ -30,13 +37,19 @@ const RECIPE_FLINT_KNAPPING = preload("res://data/recipes/flint_knapping.tres")
 @onready var dialogue_title: Label = $UI/DialoguePanel/MarginContainer/VBoxContainer/DialogueTitle
 @onready var dialogue_text: Label = $UI/DialoguePanel/MarginContainer/VBoxContainer/DialogueText
 @onready var slots_hbox: HBoxContainer = $UI/HotbarPanel/MarginContainer/SlotsHBox
+
 @onready var crafting_panel: PanelContainer = $UI/CraftingPanel
 @onready var crafting_title: Label = $UI/CraftingPanel/MarginContainer/VBoxContainer/CraftingTitle
 @onready var recipe_list: VBoxContainer = $UI/CraftingPanel/MarginContainer/VBoxContainer/RecipeList
 @onready var craft_button: Button = $UI/CraftingPanel/MarginContainer/VBoxContainer/CraftButton
 @onready var craft_feedback: Label = $UI/CraftingPanel/MarginContainer/VBoxContainer/CraftFeedback
 
+@onready var science_panel: PanelContainer = $UI/SciencePanel
+@onready var tech_list_label: Label = $UI/SciencePanel/MarginContainer/VBoxContainer/TechList
+@onready var exp_list_label: Label = $UI/SciencePanel/MarginContainer/VBoxContainer/ExpList
+
 var player: PlayerController = null
+var science_journal: ScienceJournal = null
 var _last_interaction_target: Interactable = null
 var _slot_ui_elements: Array[Dictionary] = []
 
@@ -44,9 +57,12 @@ var _slot_ui_elements: Array[Dictionary] = []
 var _active_station: CraftingStation = null
 var _selected_recipe_index: int = -1
 var _recipe_labels: Array[Label] = []
+var _item_catalog: Dictionary = {}
 
 
 func _ready() -> void:
+	_setup_catalogs()
+	_setup_science_journal()
 	_generate_isometric_ground()
 	_spawn_obstacles()
 	_spawn_petrified_statue()
@@ -56,6 +72,67 @@ func _ready() -> void:
 	_create_world_boundaries()
 	_setup_hotbar_ui()
 	craft_button.pressed.connect(_on_craft_button_pressed)
+	_refresh_science_ui()
+
+
+func _setup_catalogs() -> void:
+	_item_catalog[ITEM_FLINT.id] = ITEM_FLINT
+	_item_catalog[ITEM_CLAY.id] = ITEM_CLAY
+	_item_catalog[ITEM_SALTPETER.id] = ITEM_SALTPETER
+	_item_catalog[ITEM_CLAY_BRICK.id] = ITEM_CLAY_BRICK
+	_item_catalog[ITEM_STONE_FLAKES.id] = ITEM_STONE_FLAKES
+	_item_catalog[ITEM_CALCIUM.id] = ITEM_CALCIUM
+	_item_catalog[ITEM_QUICKLIME.id] = ITEM_QUICKLIME
+	_item_catalog[ITEM_SOOT.id] = ITEM_SOOT
+
+
+func _setup_science_journal() -> void:
+	science_journal = ScienceJournal.new()
+	science_journal.register_tech(TECH_FIRE)
+	science_journal.register_tech(TECH_CALCINATION)
+	science_journal.register_experiment(EXP_CALCINATION)
+	science_journal.grant_initial_technology(TECH_FIRE)
+	science_journal.journal_updated.connect(_refresh_science_ui)
+	add_child(science_journal)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_science"):
+		_toggle_science_panel()
+
+
+func _toggle_science_panel() -> void:
+	science_panel.visible = not science_panel.visible
+	if science_panel.visible:
+		_refresh_science_ui()
+
+
+func _refresh_science_ui() -> void:
+	if not science_journal or not tech_list_label or not exp_list_label:
+		return
+
+	# Tecnologias
+	var tech_text: String = ""
+	var techs: Array[TechDefinition] = [TECH_FIRE, TECH_CALCINATION]
+	for tech in techs:
+		var unlocked: bool = science_journal.is_technology_unlocked(tech.id)
+		var status_icon: String = "✓ [DOMINADA]" if unlocked else "🔒 [BLOQUEADA]"
+		tech_text += "%s %s\n" % [status_icon, tech.display_name]
+		if not unlocked:
+			var missing = tech.get_missing_prerequisites(science_journal.unlocked_technologies, science_journal.completed_experiments)
+			tech_text += "   Requisitos: %s\n" % ", ".join(missing)
+		else:
+			tech_text += "   %s\n" % tech.description
+	tech_list_label.text = tech_text.rstrip("\n")
+
+	# Experimentos
+	var exp_text: String = ""
+	var exps: Array[ExperimentDefinition] = [EXP_CALCINATION]
+	for exp_def in exps:
+		var count: int = science_journal.get_experiment_completion_count(exp_def.id)
+		var exp_status: String = "✓ Concluído (%dx)" % count if count > 0 else "🔬 Hipótese Ativa"
+		exp_text += "[%s] %s\n   %s\n" % [exp_status, exp_def.display_name, exp_def.scientific_principle]
+	exp_list_label.text = exp_text.rstrip("\n")
 
 
 func _process(_delta: float) -> void:
@@ -72,11 +149,12 @@ func _process(_delta: float) -> void:
 				if not s.is_empty():
 					inv_count += 1
 
-		info_label.text = "FPS: %d | Posição: (%.1f, %.1f) | Mochila: %d/%d slots\nAlvo próximo: %s | [E] Interagir/Coletar/Fabricar" % [
-			fps, pos.x, pos.y, inv_count, player.inventory.max_slots if player.inventory else 8, target_info
+		var sci_status: String = "Calcinar [OK]" if science_journal.is_technology_unlocked(TECH_CALCINATION.id) else "Fogo [Base]"
+
+		info_label.text = "FPS: %d | Pos: (%.1f, %.1f) | Mochila: %d/%d | Ciência: %s\nAlvo: %s | [E] Interagir | [T] Caderno Científico" % [
+			fps, pos.x, pos.y, inv_count, player.inventory.max_slots if player.inventory else 8, sci_status, target_info
 		]
 
-	# Actualiza destaque das receitas se o painel estiver aberto
 	if crafting_panel.visible and _active_station and player and player.inventory:
 		_refresh_recipe_highlights()
 
@@ -119,7 +197,10 @@ func _spawn_collectibles() -> void:
 		{ "resource": ITEM_CLAY, "amount": 3, "pos": Vector2i(10, 6) },
 		{ "resource": ITEM_CLAY, "amount": 2, "pos": Vector2i(11, 8) },
 		{ "resource": ITEM_SALTPETER, "amount": 1, "pos": Vector2i(6, 8) },
-		{ "resource": ITEM_SALTPETER, "amount": 2, "pos": Vector2i(10, 10) }
+		{ "resource": ITEM_SALTPETER, "amount": 2, "pos": Vector2i(10, 10) },
+		# Carbonato de cálcio para o experimento científico de calcinação (BK-019)
+		{ "resource": ITEM_CALCIUM, "amount": 3, "pos": Vector2i(6, 6) },
+		{ "resource": ITEM_CALCIUM, "amount": 2, "pos": Vector2i(7, 8) }
 	]
 	for spawn_data in items_to_spawn:
 		var col_node: CollectibleItem = COLLECTIBLE_SCENE.instantiate()
@@ -135,7 +216,6 @@ func _spawn_crafting_bench() -> void:
 	bench.position = _grid_to_screen(7, 10)
 	entities_container.add_child(bench)
 
-	# Configura o CraftingStation com receitas e catálogo de itens
 	var station: CraftingStation = bench.get_node("CraftingStation")
 	station.available_recipes = [RECIPE_CLAY_BRICK, RECIPE_FLINT_KNAPPING]
 	station.register_item(ITEM_CLAY_BRICK)
@@ -143,7 +223,6 @@ func _spawn_crafting_bench() -> void:
 	station.craft_completed.connect(_on_craft_completed)
 	station.craft_failed.connect(_on_craft_failed)
 
-	# Liga o Interactable da bancada para abrir o painel de fabricação
 	var interactable: Interactable = bench.get_node("Interactable")
 	interactable.interacted.connect(_on_bench_interacted.bind(station))
 
@@ -221,17 +300,15 @@ func _update_hotbar() -> void:
 			icon_rect.texture = null
 			label.text = ""
 
-	# Atualiza realce das receitas se painel de fabricação estiver aberto
 	if crafting_panel.visible:
 		_refresh_recipe_highlights()
 
 
 # ──────────────────────────────────────────────
-# Fabricação
+# Fabricação e Experimentos na Bancada
 # ──────────────────────────────────────────────
 
 func _on_bench_interacted(_initiator: Node2D, station: CraftingStation) -> void:
-	# Alterna o painel de fabricação
 	if crafting_panel.visible and _active_station == station:
 		_close_crafting_panel()
 		return
@@ -243,9 +320,8 @@ func _on_bench_interacted(_initiator: Node2D, station: CraftingStation) -> void:
 func _open_crafting_panel(station: CraftingStation) -> void:
 	crafting_panel.visible = true
 	dialogue_panel.visible = false
-	crafting_title.text = "[ %s ]" % station.station_id
+	crafting_title.text = "[ Bancada & Laboratório ]"
 
-	# Limpa a lista anterior
 	for child in recipe_list.get_children():
 		child.queue_free()
 	_recipe_labels.clear()
@@ -253,7 +329,6 @@ func _open_crafting_panel(station: CraftingStation) -> void:
 	craft_button.disabled = true
 	craft_feedback.text = ""
 
-	# Cria um label por receita
 	var recipes: Array[RecipeDefinition] = station.get_available_recipes_for(
 		player.inventory if player else Inventory.new()
 	)
@@ -267,12 +342,25 @@ func _open_crafting_panel(station: CraftingStation) -> void:
 		recipe_list.add_child(lbl)
 		_recipe_labels.append(lbl)
 
-		# Seleciona receita ao clicar
 		var idx: int = i
 		lbl.gui_input.connect(func(event: InputEvent) -> void:
 			if event is InputEventMouseButton and event.pressed:
 				_select_recipe(idx)
 		)
+
+	# Adiciona botão para realizar o Experimento de Calcinação Térmica (BK-019)
+	var exp_lbl: Label = Label.new()
+	exp_lbl.add_theme_font_size_override("font_size", 12)
+	exp_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	exp_lbl.mouse_filter = Control.MOUSE_FILTER_STOP
+	recipe_list.add_child(exp_lbl)
+	_recipe_labels.append(exp_lbl)
+	
+	var exp_idx: int = recipes.size()
+	exp_lbl.gui_input.connect(func(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.pressed:
+			_select_recipe(exp_idx)
+	)
 
 	_refresh_recipe_highlights()
 
@@ -289,8 +377,8 @@ func _refresh_recipe_highlights() -> void:
 
 	var recipes: Array[RecipeDefinition] = _active_station.get_available_recipes_for(player.inventory)
 
-	for i in range(_recipe_labels.size()):
-		if i >= recipes.size():
+	for i in range(recipes.size()):
+		if i >= _recipe_labels.size():
 			break
 		var recipe: RecipeDefinition = recipes[i]
 		var can: bool = recipe.can_craft(player.inventory)
@@ -317,20 +405,57 @@ func _refresh_recipe_highlights() -> void:
 		else:
 			lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
 
-	# Habilita botão só se a receita selecionada puder ser fabricada
-	var can_craft_selected: bool = false
+	# Atualiza o label do experimento de calcinação
+	if _recipe_labels.size() > recipes.size():
+		var exp_lbl: Label = _recipe_labels[recipes.size()]
+		var can_exp: bool = EXP_CALCINATION.can_prepare(player.inventory, &"structure.station.crafting_bench", science_journal.unlocked_technologies)
+		var have_calcium: int = player.inventory.get_item_count(ITEM_CALCIUM.id)
+		
+		exp_lbl.text = "[%s] Experimento: Calcinação do Calcário\n  • carbonato de cálcio: %d/2\n  • Calor exigido: ≥600°C" % [
+			"✓" if can_exp else "✗",
+			have_calcium
+		]
+		if _selected_recipe_index == recipes.size():
+			exp_lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.4))
+		elif can_exp:
+			exp_lbl.add_theme_color_override("font_color", Color(0.4, 0.8, 1.0))
+		else:
+			exp_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+
+	var can_act: bool = false
 	if _selected_recipe_index >= 0 and _selected_recipe_index < recipes.size():
-		can_craft_selected = recipes[_selected_recipe_index].can_craft(player.inventory)
-	craft_button.disabled = not can_craft_selected
+		can_act = recipes[_selected_recipe_index].can_craft(player.inventory)
+		craft_button.text = "[ E ] Fabricar"
+	elif _selected_recipe_index == recipes.size():
+		can_act = EXP_CALCINATION.can_prepare(player.inventory, &"structure.station.crafting_bench", science_journal.unlocked_technologies)
+		craft_button.text = "[ E ] Executar Experimento"
+
+	craft_button.disabled = not can_act
 
 
 func _on_craft_button_pressed() -> void:
 	if not _active_station or not player or not player.inventory:
 		return
+
 	var recipes: Array[RecipeDefinition] = _active_station.get_available_recipes_for(player.inventory)
-	if _selected_recipe_index < 0 or _selected_recipe_index >= recipes.size():
-		return
-	_active_station.try_craft(recipes[_selected_recipe_index], player.inventory)
+	if _selected_recipe_index >= 0 and _selected_recipe_index < recipes.size():
+		_active_station.try_craft(recipes[_selected_recipe_index], player.inventory)
+	elif _selected_recipe_index == recipes.size():
+		# Executa o experimento de calcinação térmica com sucesso térmico (heat = 700°C)
+		var exp_result: Dictionary = science_journal.execute_experiment(
+			EXP_CALCINATION,
+			player.inventory,
+			&"structure.station.crafting_bench",
+			{ "heat": 700, "duration": 4.0 },
+			_item_catalog
+		)
+		if exp_result["success"]:
+			craft_feedback.text = "✓ Experimento Concluído! Cal Virgem obtida. Ciência avançou!"
+			craft_feedback.add_theme_color_override("font_color", Color(0.4, 0.85, 1.0))
+		else:
+			craft_feedback.text = "✗ Experimento falhou: %s" % exp_result["reason"]
+			craft_feedback.add_theme_color_override("font_color", Color(0.95, 0.5, 0.5))
+		_refresh_recipe_highlights()
 
 
 func _on_craft_completed(recipe: RecipeDefinition, _output_item: ItemDefinition, amount: int) -> void:
@@ -355,7 +480,6 @@ func _close_crafting_panel() -> void:
 # ──────────────────────────────────────────────
 
 func _on_player_interaction_triggered(target: Interactable) -> void:
-	# Se for a bancada, ignora — o sinal da bancada cuida do painel de fabricação
 	if target.interaction_id == &"structure.station.crafting_bench":
 		return
 

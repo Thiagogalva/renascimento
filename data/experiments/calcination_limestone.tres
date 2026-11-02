@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ExperimentDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/experiment_definition.gd" id="1_exp"]
+
+[resource]
+script = ExtResource("1_exp")
+id = &"experiment.calcination.limestone"
+display_name = "Decomposição Térmica do Calcário"
+description = "Submeter conchas trituradas a calor intenso para liberar dióxido de carbono e isolar óxido de cálcio."
+scientific_principle = "CaCO3 (s) + calor (≥ 800°C) → CaO (s) + CO2 (g). A reação endotérmica exige temperatura sustentada para quebrar a rede cristalina do carbonato."
+station_required = &"structure.station.crafting_bench"
+prerequisite_tech_id = &"tech.primitive.fire"
+inputs = [{"amount": 2, "item_id": &"item.raw.calcium_carbonate"}]
+conditions = {"duration_seconds": 3.0, "min_heat": 600}
+outputs_success = [{"amount": 2, "item_id": &"item.chemical.quicklime"}]
+outputs_failure = [{"amount": 1, "item_id": &"item.raw.soot_ash"}]
+discovery_unlock_tech = &"tech.chemistry.calcination"
+deprecated = false

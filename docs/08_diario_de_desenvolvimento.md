@@ -4,6 +4,28 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
 
 ## 2026-10 — Fundação local
 
+### 2026-11-01 — Ciência, Tecnologia e Experimentos Implementados (BK-016 a BK-020)
+
+- **Objetivo:** Modelar a árvore de conhecimentos, experimentos científicos, persistência do caderno científico e integrar o experimento de calcinação do calcário no protótipo jogável.
+- **Branch:** `feature/fase-4-ciencia-e-tecnologia`
+- **Arquivos criados:**
+  - `scripts/tech_definition.gd` — `class_name TechDefinition extends Resource`: árvore tecnológica com pré-requisitos tecnológicos e experimentais, desbloqueio de receitas/estruturas, suporte a depreciação e `get_missing_prerequisites()`.
+  - `scripts/experiment_definition.gd` — `class_name ExperimentDefinition extends Resource`: insumos, condições físicas (`min_heat`, `duration_seconds`), fundamentação científica real, saídas de sucesso e falha, e tecnologia de descoberta.
+  - `scripts/science_journal.gd` — `class_name ScienceJournal extends Node`: caderno de anotações com persistência (`serialize()` / `deserialize()`), registro de tecnologias dominadas, contagem de experimentos e catalogação de materiais.
+  - `data/tech/primitive_fire.tres`, `data/tech/calcination.tres` — recursos de tecnologia.
+  - `data/experiments/calcination_limestone.tres` — experimento de decomposição térmica do carbonato de cálcio para obtenção de cal virgem.
+  - `data/items/calcium_carbonate.tres`, `data/items/quicklime.tres`, `data/items/soot_ash.tres` — novos itens e subprodutos.
+  - `assets/sprites/item_calcium.svg` — sprite SVG para carbonato de cálcio / conchas.
+  - `tests/test_science_progression.gd` — suíte com 25 asserções cobrindo pré-requisitos, preparação, falhas térmicas controladas, sucesso ótimo e persistência do caderno.
+- **Arquivos modificados:**
+  - `project.godot` — adicionadas ações de input semântico `toggle_science` (tecla T) e `toggle_inventory` (tecla I).
+  - `scenes/tests/test_isometric_sandbox.tscn` e `.gd` — adicionado `SciencePanel` exibindo tecnologias e hipóteses, tecla T para abrir/fechar, spawn de conchas de cálcio no mapa e execução do experimento na bancada.
+  - `docs/03_backlog.md` — tarefas BK-016 a BK-020 marcadas como Concluídas.
+- **Validações executadas:**
+  - `tests/test_science_progression.gd` → **25/25 testes passaram ✅ (Exit Code 0)**.
+  - Suíte completa de regressão (5 suítes: interação, inventário, fabricação, persistência e ciência) → **100% de sucesso (Exit Code 0)**.
+  - Execução da cena isométrica por 60 frames (`--quit-after 60`) → **Exit Code 0**.
+
 ### 2026-11-01 — Persistência, atomicidade e tolerância a falhas do inventário (BK-015)
 
 - **Objetivo:** Garantir a integridade, atomicidade e persistência de dados do inventário sem perdas nem duplicações em cenários válidos ou corrompidos.

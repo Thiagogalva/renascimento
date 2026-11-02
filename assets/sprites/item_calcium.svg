@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Conchas marinhas / rocha de calcário -->
+  <path d="M 24,6 C 14,14 10,26 12,38 C 16,42 32,42 36,38 C 38,26 34,14 24,6 Z" fill="#E8DEC8" stroke="#8C7D6B" stroke-width="2"/>
+  <path d="M 24,6 L 24,40" stroke="#B8A890" stroke-width="1.5" stroke-dasharray="2,2"/>
+  <path d="M 24,6 C 20,18 18,28 18,39" stroke="#B8A890" stroke-width="1.2"/>
+  <path d="M 24,6 C 28,18 30,28 30,39" stroke="#B8A890" stroke-width="1.2"/>
+  <circle cx="24" cy="40" r="3" fill="#D0C0A8"/>
+</svg>

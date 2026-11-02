@@ -43,13 +43,13 @@
 
 ## Fase 4 — Ciência e tecnologia (P1)
 
-| ID | Tarefa | Resultado esperado |
-|---|---|---|
-| BK-016 | Modelar conhecimento e tecnologia | IDs, pré-requisitos e desbloqueios documentados |
-| BK-017 | Modelar experimentos | Materiais, ferramentas, condições e resultados |
-| BK-018 | Implementar registro de descobertas | Descoberta é registrada de modo persistente |
-| BK-019 | Implementar um experimento do protótipo | Um experimento pode ser preparado e concluído |
-| BK-020 | Validar progressão científica | Pré-requisitos, falhas e desbloqueios testados |
+| ID | Tarefa | Resultado esperado | Estado |
+|---|---|---|---|
+| BK-016 | Modelar conhecimento e tecnologia | IDs, pré-requisitos e desbloqueios documentados | Concluída |
+| BK-017 | Modelar experimentos | Materiais, ferramentas, condições e resultados | Concluída |
+| BK-018 | Implementar registro de descobertas | Descoberta é registrada de modo persistente | Concluída |
+| BK-019 | Implementar um experimento do protótipo | Um experimento pode ser preparado e concluído | Concluída |
+| BK-020 | Validar progressão científica | Pré-requisitos, falhas e desbloqueios testados | Concluída |
 
 ## Fase 5 — Reviver e tarefas de NPC (P1)
 

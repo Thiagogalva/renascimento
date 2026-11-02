@@ -150,3 +150,56 @@ theme_override_colors/font_color = Color(0.6, 0.95, 0.6, 1)
 theme_override_font_sizes/font_size = 11
 text = ""
 autowrap_mode = 3
+
+[node name="SciencePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 380.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/SciencePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/SciencePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ScienceTitle" type="Label" parent="UI/SciencePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1.0, 1)
+theme_override_font_sizes/font_size = 14
+text = "[ Caderno Científico — Tecla T ]"
+
+[node name="TechHeader" type="Label" parent="UI/SciencePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.45, 1)
+theme_override_font_sizes/font_size = 12
+text = "— Tecnologias Dominadas —"
+
+[node name="TechList" type="Label" parent="UI/SciencePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Carregando..."
+autowrap_mode = 3
+
+[node name="ExpHeader" type="Label" parent="UI/SciencePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.45, 1)
+theme_override_font_sizes/font_size = 12
+text = "— Experimentos & Hipóteses —"
+
+[node name="ExpList" type="Label" parent="UI/SciencePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Carregando..."
+autowrap_mode = 3
+

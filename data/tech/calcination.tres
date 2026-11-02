@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TechDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tech_definition.gd" id="1_tech"]
+
+[resource]
+script = ExtResource("1_tech")
+id = &"tech.chemistry.calcination"
+display_name = "Calcinação e Termoquímica"
+description = "Compreensão da decomposição térmica de minerais sob alta temperatura. Permite produzir cal virgem, argamassa primitiva e refratários avançados."
+category = 1
+prerequisite_tech_ids = [&"tech.primitive.fire"]
+required_experiment_ids = [&"experiment.calcination.limestone"]
+unlocked_recipes = [&"recipe.basic.clay_brick"]
+unlocked_structures = [&"structure.station.clay_kiln"]
+deprecated = false
