@@ -39,7 +39,7 @@
 | BK-012 | Implementar inventário inicial | Adicionar, remover e mover itens com validação | Concluída |
 | BK-013 | Definir receitas | Entradas, estação, tempo e resultado modelados em dados | Concluída |
 | BK-014 | Implementar fabricação básica | Uma receita completa pode ser fabricada | Concluída |
-| BK-015 | Validar persistência e falhas do inventário | Sem duplicação/perda em operações válidas ou inválidas | Planejada |
+| BK-015 | Validar persistência e falhas do inventário | Sem duplicação/perda em operações válidas ou inválidas | Concluída |
 
 ## Fase 4 — Ciência e tecnologia (P1)
 

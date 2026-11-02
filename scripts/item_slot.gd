@@ -16,9 +16,23 @@ func is_empty() -> bool:
 func can_stack_with(other_item: ItemDefinition) -> bool:
 	if is_empty():
 		return true
+	if other_item == null:
+		return false
 	return item.id == other_item.id and quantity < item.max_stack
 
 func get_free_space() -> int:
 	if is_empty():
 		return 999
 	return maxi(0, item.max_stack - quantity)
+
+func clear() -> void:
+	item = null
+	quantity = 0
+
+func serialize() -> Dictionary:
+	if is_empty():
+		return {}
+	return {
+		"item_id": str(item.id),
+		"quantity": quantity
+	}

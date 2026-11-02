@@ -4,6 +4,25 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
 
 ## 2026-10 — Fundação local
 
+### 2026-11-01 — Persistência, atomicidade e tolerância a falhas do inventário (BK-015)
+
+- **Objetivo:** Garantir a integridade, atomicidade e persistência de dados do inventário sem perdas nem duplicações em cenários válidos ou corrompidos.
+- **Branch:** `feature/fase-3-persistencia-inventario`
+- **Arquivos modificados:**
+  - `scripts/item_slot.gd` — adicionados `clear()`, `serialize()` e verificação de nulidade em `can_stack_with()`.
+  - `scripts/inventory.gd` — adicionados `serialize()`, `deserialize()` com validação defensiva, `transfer_item_to()` com atomicidade estrita de transferência, `swap_slots()`, `split_stack()`, `clear()` e `get_total_item_count()`.
+  - `docs/03_backlog.md` — BK-015 marcada como Concluída (Fase 3 100% concluída).
+- **Arquivos criados:**
+  - `tests/test_inventory_persistence.gd` — suíte completa de 37 asserções cobrindo serialização íntegra, tratamento de dados corrompidos (índices negativos, fora do limite, IDs inexistentes, quantidades negativas), limitação defensiva ao `max_stack`, conservação estrita de itens em transbordo/alvo lotado, manipulação de slots e proteções contra parâmetros anômalos.
+- **Validações executadas:**
+  - `tests/test_inventory_persistence.gd` → **37/37 testes passaram ✅ (Exit Code 0)**.
+  - `tests/test_inventory.gd` → **19/19 testes passaram ✅ (Exit Code 0)**.
+  - `tests/test_crafting.gd` → **17/17 testes passaram ✅ (Exit Code 0)**.
+  - Cena sandbox isométrica (`--quit-after 60`) → **Exit Code 0**.
+- **Decisões técnicas:**
+  - `transfer_item_to`: transferência atômica com cálculo prévio de capacidade do alvo ou reposição imediata da sobra, garantindo que `total(A) + total(B)` antes da transferência é idêntico a `total(A) + total(B)` depois da transferência.
+  - `deserialize`: tolerante a corrupção de save/dados; slots com itens não registrados no catálogo são descartados com aviso seguro, sem falhar o carregamento ou travar a execução. Quantidades excedentes sofrem clamp automático no `max_stack`.
+
 ### 2026-11-01 — Fabricação básica implementada (BK-013, BK-014)
 
 - **Objetivo:** Modelar receitas em dados e implementar o sistema de fabricação do jogador com bancada interativa.
