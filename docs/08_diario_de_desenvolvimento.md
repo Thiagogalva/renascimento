@@ -4,6 +4,31 @@ Registre fatos verificáveis. Não incluir tokens, senhas, dados privados ou sup
 
 ## 2026-10 — Fundação local
 
+### 2026-11-01 — Fabricação básica implementada (BK-013, BK-014)
+
+- **Objetivo:** Modelar receitas em dados e implementar o sistema de fabricação do jogador com bancada interativa.
+- **Branch:** `feature/fase-3-fabricacao`
+- **Arquivos criados:**
+  - `scripts/recipe_definition.gd` — `class_name RecipeDefinition extends Resource`: id, inputs (Array[Dictionary]), output_item_id, output_amount, required_station_id, craft_time_seconds, deprecated. Métodos `can_craft(inventory)` e `get_missing_inputs(inventory)`.
+  - `scripts/crafting_station.gd` — `class_name CraftingStation extends Node`: catálogo de receitas, catálogo de itens (`_item_catalog`), `try_craft()` consome insumos e emite sinais `craft_completed`/`craft_failed`, `get_available_recipes_for()` e `get_craftable_recipes_for()`.
+  - `data/items/clay_brick.tres`, `stone_flakes.tres` — novos ItemDefinitions de saída.
+  - `data/recipes/clay_brick.tres`, `flint_knapping.tres` — receitas de mãos limpas.
+  - `assets/sprites/crafting_bench.svg` — sprite SVG isométrico da bancada.
+  - `scenes/entities/crafting_bench.tscn` — bancada: StaticBody2D + Sprite2D + Interactable + CraftingStation.
+  - `tests/test_crafting.gd` — 17 asserts cobrindo can_craft, try_craft, consumo, falhas, estação errada, receita depreciada e filtragem.
+- **Arquivos modificados:**
+  - `scenes/tests/test_isometric_sandbox.gd` — integração completa: spawn da bancada, painel de fabricação lateral com lista de receitas, destaque por disponibilidade e feedback de resultado.
+  - `scenes/tests/test_isometric_sandbox.tscn` — adicionado `CraftingPanel` com `RecipeList`, `CraftButton` e `CraftFeedback`.
+- **Validações executadas:**
+  - `--editor --headless --quit` → exit 0 (CraftingStation e RecipeDefinition registradas; crafting_bench.svg importado)
+  - `--headless --quit-after 60` → exit 0, sem erros de script
+  - `--headless --script tests/test_crafting.gd` → **17/17 testes passaram ✅**
+- **Decisões técnicas:**
+  - `RecipeDefinition extends Resource` para serialização `.tres` sem lógica de cena.
+  - `CraftingStation` injeta `_item_catalog` via `register_item()` — sem autoload global; resolvível por cena.
+  - Receita `deprecated = true` é barrada em tempo de execução sem remover o ID do histórico.
+  - Painel de fabricação fecha ao interagir novamente com a bancada (toggle) e fecha o painel de diálogo.
+
 ### 2026-11-01 — Inventário e Coleta implementados (BK-011, BK-012)
 
 - **Objetivo:** Modelar item/pilha e implementar o sistema de inventário do jogador com coleta de itens no mundo.

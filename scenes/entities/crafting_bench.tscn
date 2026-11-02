@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="1_inter"]
+[ext_resource type="Script" path="res://scripts/crafting_station.gd" id="2_craft"]
+[ext_resource type="Texture2D" path="res://assets/sprites/crafting_bench.svg" id="3_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 20.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(48, 16)
+
+[node name="CraftingBench" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_tex")
+offset = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Interactable" type="Area2D" parent="."]
+script = ExtResource("1_inter")
+interaction_title = "Bancada de Fabricação"
+interaction_id = &"structure.station.crafting_bench"
+scientific_log_entry = "[Bancada Primitiva] Uma superfície plana de pedra lascada e madeira. Permite combinar materiais com as mãos."
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+shape = SubResource("CircleShape2D_1")
+
+[node name="CraftingStation" type="Node" parent="."]
+script = ExtResource("2_craft")
+station_id = &"structure.station.crafting_bench"

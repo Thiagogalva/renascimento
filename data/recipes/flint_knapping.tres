@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RecipeDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/recipe_definition.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"recipe.basic.flint_knapping"
+display_name = "Lascar Sílex"
+description = "Golpeia dois pedaços de sílex para produzir lascas afiadas. Técnica de lascamento primitivo."
+required_station_id = &""
+inputs = [{"item_id": &"item.raw.flint", "amount": 2}]
+output_item_id = &"item.raw.stone_flakes"
+output_amount = 3
+craft_time_seconds = 0.0
+deprecated = false

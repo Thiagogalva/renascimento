@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RecipeDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/recipe_definition.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"recipe.basic.clay_brick"
+display_name = "Tijolo de Argila"
+description = "Molda e seca manualmente um bloco de argila. Processo rudimentar, sem queima."
+required_station_id = &""
+inputs = [{"item_id": &"item.raw.clay", "amount": 3}]
+output_item_id = &"item.raw.clay_brick"
+output_amount = 1
+craft_time_seconds = 0.0
+deprecated = false

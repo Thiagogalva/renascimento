@@ -105,3 +105,48 @@ theme_override_constants/margin_bottom = 6
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
+
+[node name="CraftingPanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 140.0
+offset_right = 260.0
+offset_bottom = -90.0
+grow_horizontal = 1
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/CraftingPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CraftingPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="CraftingTitle" type="Label" parent="UI/CraftingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.45, 1)
+theme_override_font_sizes/font_size = 14
+text = "[ Fabricação ]"
+
+[node name="RecipeList" type="VBoxContainer" parent="UI/CraftingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CraftButton" type="Button" parent="UI/CraftingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "[ E ] Fabricar"
+disabled = true
+
+[node name="CraftFeedback" type="Label" parent="UI/CraftingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.95, 0.6, 1)
+theme_override_font_sizes/font_size = 11
+text = ""
+autowrap_mode = 3

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" width="64" height="48">
+  <!-- Base isométrica da bancada -->
+  <polygon points="32,4 60,18 32,32 4,18" fill="#8B6914" stroke="#5C4209" stroke-width="1.5"/>
+  <!-- Face direita (sombra) -->
+  <polygon points="60,18 60,36 32,50 32,32" fill="#5C4209"/>
+  <!-- Face esquerda (meia-sombra) -->
+  <polygon points="4,18 4,36 32,50 32,32" fill="#7A5A12"/>
+  <!-- Superfície de trabalho (topo mais claro) -->
+  <polygon points="32,6 58,19 32,30 6,19" fill="#C4960A" opacity="0.6"/>
+  <!-- Pedras/utensílios na bancada -->
+  <ellipse cx="32" cy="15" rx="8" ry="4" fill="#A09080" stroke="#706050" stroke-width="1"/>
+  <rect x="26" y="12" width="12" height="5" rx="2" fill="#909080" stroke="#606050" stroke-width="0.8"/>
+  <!-- Indicador de interação (brilho) -->
+  <circle cx="48" cy="12" r="3" fill="#FFD700" opacity="0.8"/>
+</svg>
