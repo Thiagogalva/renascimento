@@ -8,7 +8,7 @@ signal interaction_triggered(target: Interactable)
 @export var move_speed: float = 200.0
 @export var isometric_aspect_ratio: float = 0.5
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D if has_node("AnimatedSprite2D") else null
 @onready var interaction_detector: Area2D = $InteractionDetector
 @onready var inventory: Inventory = $Inventory
 
@@ -42,8 +42,12 @@ func _handle_movement(delta: float) -> void:
 				sprite.flip_h = true
 			elif raw_input.x > 0:
 				sprite.flip_h = false
+			if sprite.animation != &"walk":
+				sprite.play(&"walk")
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, move_speed * 8.0 * delta)
+		if sprite and sprite.animation != &"idle":
+			sprite.play(&"idle")
 		
 	move_and_slide()
 

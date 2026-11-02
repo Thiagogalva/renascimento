@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="1_controller"]
-[ext_resource type="Texture2D" uid="uid://clllu8ahx1ppr" path="res://assets/sprites/player_placeholder.svg" id="2_texture"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/player_frames.tres" id="2_frames"]
 [ext_resource type="Script" path="res://scripts/inventory.gd" id="3_inventory"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_feet"]
@@ -17,11 +17,15 @@ collision_layer = 1
 collision_mask = 1
 script = ExtResource("1_controller")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_texture")
-offset = Vector2(0, -28)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -210)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_feet")
 
